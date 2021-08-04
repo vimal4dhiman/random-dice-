@@ -18,56 +18,50 @@ const Main = () => {
 
   const [changePlayer, setChangePlayer] = useState(true);
 
+  const [playing, setPlaying] = useState(true);
+
+  const target = 10;
+
   const newGameHandler = () => {
-    setImg(false);
     setP1Score(0);
     setP1Current(0);
     setP2Current(0);
     setP2Score(0);
-    setDice(0);
+    setImg(false);
+    setDice(null);
     setChangePlayer(true);
+    setPlaying(true);
   };
 
   let diceValue;
 
   const rollDiceHandler = () => {
-    diceValue = Math.trunc(Math.random() * 6) + 1;
-    setImg(true);
-    setDice(diceValue);
-    if (changePlayer) {
-      if (diceValue === 1) {
-        setChangePlayer(false);
-        setP1Current(0);
-        setP1Score(p1Score);
-      } else if (p1Current === 0) {
-        setP1Current(diceValue);
-      } else if (p1Current !== 0) {
-        setP1Current(diceValue + p1Current);
+    if (playing) {
+      diceValue = Math.trunc(Math.random() * 6) + 1;
+      setImg(true);
+      setDice(diceValue);
+      if (changePlayer) {
+        if (diceValue === 1) {
+          setChangePlayer(false);
+          setP1Current(0);
+          setP1Score(p1Score);
+        } else if (p1Current === 0) {
+          setP1Current(diceValue);
+        } else if (p1Current !== 0) {
+          setP1Current(diceValue + p1Current);
+        }
       }
-    }
-    if (!changePlayer) {
-      if (diceValue === 1) {
-        setChangePlayer(true);
-        setP2Current(0);
-        setP2Score(p2Score);
-      } else if (p2Current === 0) {
-        setP2Current(diceValue);
-      } else if (p2Current !== 0) {
-        setP2Current(diceValue + p2Current);
+      if (!changePlayer) {
+        if (diceValue === 1) {
+          setChangePlayer(true);
+          setP2Current(0);
+          setP2Score(p2Score);
+        } else if (p2Current === 0) {
+          setP2Current(diceValue);
+        } else if (p2Current !== 0) {
+          setP2Current(diceValue + p2Current);
+        }
       }
-    }
-  };
-
-  const holdDiceHandler = () => {
-    if (changePlayer) {
-      setP1Score(p1Score + p1Current);
-      setP1Current(0);
-      setChangePlayer(false);
-    }
-    if (!changePlayer) {
-      setP2Score(p2Score + p2Current);
-      setP2Current(0);
-      setChangePlayer(true);
     }
   };
 
@@ -78,6 +72,29 @@ const Main = () => {
   let p2cssActive = !changePlayer
     ? "player player--1 player--active"
     : "player player--1";
+
+  let diceClass = `dice`;
+
+  const holdDiceHandler = () => {
+    if (playing) {
+      if (changePlayer) {
+        setP1Score(p1Score + p1Current);
+        setP1Current(0);
+        if (p1Score >= target) {
+          setPlaying(false);
+          p1cssActive = p1cssActive.slice(0, 16) + `player--winner`;
+        } else setChangePlayer(false);
+      }
+      if (!changePlayer) {
+        setP2Score(p2Score + p2Current);
+        setP2Current(0);
+        if (p2Score >= target) {
+          setPlaying(false);
+          p2cssActive = "player player--1 player--winner";
+        } else setChangePlayer(true);
+      }
+    }
+  };
 
   return (
     <Fragment>
@@ -104,7 +121,9 @@ const Main = () => {
           value={p2Score}
           currentValue={p2Current}
         />
-        {imageShow && <ImageGenerate value={dice} />}
+        {imageShow && playing && (
+          <ImageGenerate value={dice} classes={diceClass} />
+        )}
         <button className="btn btn--new" onClick={newGameHandler}>
           🔄 New Game
         </button>

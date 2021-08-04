@@ -9,22 +9,22 @@ import "../App.css";
 
 const ImageGenerate = (props) => {
   if (props.value === 1) {
-    return <img src={dice1} className="dice" alt="Playing dice" />;
+    return <img src={dice1} className={props.classes} alt="Playing dice" />;
   }
   if (props.value === 2) {
-    return <img src={dice2} className="dice" alt="Playing dice" />;
+    return <img src={dice2} className={props.classes} alt="Playing dice" />;
   }
   if (props.value === 3) {
-    return <img src={dice3} className="dice" alt="Playing dice" />;
+    return <img src={dice3} className={props.classes} alt="Playing dice" />;
   }
   if (props.value === 4) {
-    return <img src={dice4} className="dice" alt="Playing dice" />;
+    return <img src={dice4} className={props.classes} alt="Playing dice" />;
   }
   if (props.value === 5) {
-    return <img src={dice5} className="dice" alt="Playing dice" />;
+    return <img src={dice5} className={props.classes} alt="Playing dice" />;
   }
   if (props.value === 6) {
-    return <img src={dice6} className="dice" alt="Playing dice" />;
+    return <img src={dice6} className={props.classes} alt="Playing dice" />;
   }
 };
 
