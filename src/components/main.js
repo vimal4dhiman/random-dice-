@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import "../App.css";
 import Section from "./section";
@@ -73,25 +73,31 @@ const Main = () => {
     ? "player player--1 player--active"
     : "player player--1";
 
-  let diceClass = `dice`;
+  let diceClass = "dice";
+
+  useEffect(() => {
+    if (p1Score >= target) {
+      setPlaying(false);
+      // const p1css = `player player--0 player--winner`;
+    }
+    if (p2Score >= target) {
+      setPlaying(false);
+      // p2cssActive = `player player--1 player--winner`;
+    }
+    return;
+  }, [p1Score, p2Score, playing]);
 
   const holdDiceHandler = () => {
     if (playing) {
       if (changePlayer) {
         setP1Score(p1Score + p1Current);
         setP1Current(0);
-        if (p1Score >= target) {
-          setPlaying(false);
-          p1cssActive = p1cssActive.slice(0, 16) + `player--winner`;
-        } else setChangePlayer(false);
+        setChangePlayer(false);
       }
       if (!changePlayer) {
         setP2Score(p2Score + p2Current);
         setP2Current(0);
-        if (p2Score >= target) {
-          setPlaying(false);
-          p2cssActive = "player player--1 player--winner";
-        } else setChangePlayer(true);
+        setChangePlayer(true);
       }
     }
   };
