@@ -8,9 +8,11 @@ import ImageGenerate from "./imageGenerator";
 const Main = () => {
   const [p1Score, setP1Score] = useState(0);
   const [p1Current, setP1Current] = useState(0);
+  const [p1Won, setP1Won] = useState(false);
 
   const [p2Score, setP2Score] = useState(0);
   const [p2Current, setP2Current] = useState(0);
+  const [p2Won, setP2Won] = useState(false);
 
   const [imageShow, setImg] = useState(false);
 
@@ -25,8 +27,10 @@ const Main = () => {
   const newGameHandler = () => {
     setP1Score(0);
     setP1Current(0);
+    setP1Won(false);
     setP2Current(0);
     setP2Score(0);
+    setP2Won(false);
     setImg(false);
     setDice(null);
     setChangePlayer(true);
@@ -65,24 +69,14 @@ const Main = () => {
     }
   };
 
-  let p1cssActive = changePlayer
-    ? "player player--0 player--active"
-    : "player player--0";
-
-  let p2cssActive = !changePlayer
-    ? "player player--1 player--active"
-    : "player player--1";
-
-  let diceClass = "dice";
-
   useEffect(() => {
     if (p1Score >= target) {
       setPlaying(false);
-      // const p1css = `player player--0 player--winner`;
+      setP1Won(true);
     }
     if (p2Score >= target) {
       setPlaying(false);
-      // p2cssActive = `player player--1 player--winner`;
+      setP2Won(true);
     }
     return;
   }, [p1Score, p2Score, playing]);
@@ -101,6 +95,19 @@ const Main = () => {
       }
     }
   };
+
+  let p1cssActive = changePlayer
+    ? "player player--0 player--active"
+    : "player player--0";
+
+  let p2cssActive = !changePlayer
+    ? "player player--1 player--active"
+    : "player player--1";
+
+  let diceClass = !playing ? "dice hidden" : "dice";
+
+  p1cssActive = p1Won ? `player player--0 player--winner` : p1cssActive;
+  p2cssActive = p2Won ? `player player--1 player--winner` : p2cssActive;
 
   return (
     <Fragment>
