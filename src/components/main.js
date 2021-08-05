@@ -22,7 +22,7 @@ const Main = () => {
 
   const [playing, setPlaying] = useState(true);
 
-  const target = 10;
+  const target = 100;
 
   const newGameHandler = () => {
     setP1Score(0);
