@@ -141,7 +141,7 @@ const Main = () => {
           🔄 New Game
         </button>
         <button className="btn btn--roll" onClick={rollDiceHandler}>
-          🎲 Roll dice
+          🎲 Roll the dice
         </button>
         <button className="btn btn--hold" onClick={holdDiceHandler}>
           📥 Hold
